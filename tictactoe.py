@@ -18,8 +18,7 @@ def state_board(game_map, player = 0, row = 0, col = 0, just_display = False):
         else:
             global current_player
             current_player = player_swap(player)
-            # for count, row in enumerate(board):
-            #     print(count, row)
+            
             
             print("This space is occupied")
 
