@@ -10,7 +10,10 @@ def state_board(game_map, player = 0, row = 0, col = 0, just_display = False):
 
             game_map[row][col] = player
 
-            print("   0  1  2")
+            header = "   " + "  ".join([str(x) for x in range(len(game_map))])
+            
+            print(header)
+            
             for count, row in enumerate(board):
                 print(count, row)
             global play_count
@@ -18,12 +21,12 @@ def state_board(game_map, player = 0, row = 0, col = 0, just_display = False):
 
             #game_map[0] + game_map[1] + game_map[2]
 
-            if(play_count-1 == 9):
-                print("Tie!")
-                global play
-                global game_won
-                play = False
-                game_won = True
+            if(play_count-1 == len(game_map)**2):
+                win_condition(game_map)
+                if not win_condition:
+                    print("Draw")
+                
+                restart()
 
             return game_map;
         
@@ -31,7 +34,7 @@ def state_board(game_map, player = 0, row = 0, col = 0, just_display = False):
             
             current_player = next(player_cycle)
             
-            print("   0  1  2")
+            print(header)
             for count, row in enumerate(board):
                 print(count, row)
             print("This space is occupied")
@@ -107,8 +110,29 @@ def win_condition(current_board):
         win = check_win(check)
         if(win):
             return True;
+    
+    return False;
 
-        
+
+def restart():
+
+    print(f"Do you want to play again? (y/n)")
+    response = input()
+
+    if(response == "y"):
+        global play
+        global game_won
+        global board
+        play = True
+        game_won = False
+        board = [[0, 0, 0],
+                 [0, 0, 0],
+                 [0, 0, 0]]
+        state_board(board, just_display = True)
+        player_cycle = itertools.cycle(players)     
+    else:
+        print("Thanks for playing")
+
               
 
 play = True
@@ -144,18 +168,6 @@ while play:
             play = False
             game_won = True
 
-            print(f"Do you want to play again? (y/n)")
-            response = input()
-
-            if(response == "y"):
-                play = True
-                game_won = False
-                board = [[0, 0, 0],
-                         [0, 0, 0],
-                         [0, 0, 0]]
-                state_board(board, just_display = True)
-                player_cycle = itertools.cycle(players)     
-            else:
-                print("Thanks for playing")  
+            restart()
 
             
