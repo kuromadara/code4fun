@@ -54,9 +54,10 @@ def state_board(game_map, player = 0, row = 0, col = 0, just_display = False):
 def check_win(row):
 
     if row.count(row[0]) == len(row) and row[0] != 0:
-        os.system('cls' if os.name == 'nt' else 'clear')
+        # os.system('cls' if os.name == 'nt' else 'clear')
         print(f"Winner! is player {row[0]}")
-        
+        global player_cycle
+        player_cycle = itertools.cycle(players)     
         return True;
 
     return False;
@@ -119,6 +120,8 @@ def win_condition(current_board):
 
 def restart():
 
+    global play_count
+    play_count = 0
     print(f"Do you want to play again? (y/n)")
     response = input()
 
@@ -143,7 +146,7 @@ game_won = False
 players = [1, 2]
 play_count = 0
 
-os.system('cls' if os.name == 'nt' else 'clear')
+# os.system('cls' if os.name == 'nt' else 'clear')
 
 board_size = int(input("Enter the size of the board: "))
 
@@ -167,7 +170,7 @@ while play:
         row_choice    = int(input(f"Enter row choice between (0-{board_size-1}): "))
         column_choice = int(input(f"Enter your column choice (0-{board_size-1}): "))
 
-        os.system('cls' if os.name == 'nt' else 'clear')
+        # os.system('cls' if os.name == 'nt' else 'clear')
 
 
         state = state_board(board, current_player, row_choice, column_choice)
