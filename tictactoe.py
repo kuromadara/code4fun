@@ -5,33 +5,28 @@ def state_board(game_map, player = 0, row = 0, col = 0, just_display = False):
 
     try: 
         
-        
+        header = "   " + "  ".join([str(x) for x in range(len(game_map))])
+
         if(game_map[row][col]) == 0:
 
             game_map[row][col] = player
 
-            header = "   " + "  ".join([str(x) for x in range(len(game_map))])
-            
             print(header)
-            
             for count, row in enumerate(board):
                 print(count, row)
             global play_count
             play_count += 1
 
-            #game_map[0] + game_map[1] + game_map[2]
-
             if(play_count-1 == len(game_map)**2):
                 win_condition(game_map)
-                if not win_condition:
+                if win_condition != True:
                     print("Draw")
-                
+
                 restart()
 
             return game_map;
-        
-        else:
-            
+
+        if(game_map[row][col] != 0):
             current_player = next(player_cycle)
             
             print(header)
@@ -40,12 +35,20 @@ def state_board(game_map, player = 0, row = 0, col = 0, just_display = False):
             print("This space is occupied")
 
             return game_map;
+        
+        
+        return False;
+        
+            
 
     except IndexError as e:
-        print("Error: Row/ Column value must b 0-2", e)
+        print(f"Error: Row/Column value must be between (0-{board_size - 1})", e)
+        current_player = next(player_cycle)
+        return False;
     
     except Exception as e:
         print("Something went wrong", e)
+        return False;
 
 
 def check_win(row):
@@ -123,11 +126,11 @@ def restart():
         global play
         global game_won
         global board
+        global board_size
         play = True
         game_won = False
-        board = [[0, 0, 0],
-                 [0, 0, 0],
-                 [0, 0, 0]]
+        board = [[0 for row in range(board_size)] for col in range(board_size)]
+                 
         state_board(board, just_display = True)
         player_cycle = itertools.cycle(players)     
     else:
@@ -140,22 +143,29 @@ game_won = False
 players = [1, 2]
 play_count = 0
 
-# current_player = 2
+os.system('cls' if os.name == 'nt' else 'clear')
 
-board = [[0, 0, 0],
-         [0, 0, 0],
-         [0, 0, 0]]
+board_size = int(input("Enter the size of the board: "))
 
+if(board_size <=0):
+    print("Board size must be greater than 0")
+    play = False
+    board_size = int(input("Enter the size of the board: "))
+
+
+board = [[0 for row in range(board_size)] for col in range(board_size)]
+play = True
 
 state_board(board, just_display = True)
 player_cycle = itertools.cycle(players)
+
 while play:
     
     while game_won == False:
         current_player = next(player_cycle)
         print(f"Current Player is: {current_player}")
-        row_choice    = int(input("Enter row choice (0,1,2): "))
-        column_choice = int(input("Enter your column choice (0,1,2): "))
+        row_choice    = int(input(f"Enter row choice between (0-{board_size-1}): "))
+        column_choice = int(input(f"Enter your column choice (0-{board_size-1}): "))
 
         os.system('cls' if os.name == 'nt' else 'clear')
 
