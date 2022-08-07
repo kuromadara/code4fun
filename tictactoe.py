@@ -18,8 +18,10 @@ def state_board(game_map, player = 0, row = 0, col = 0, just_display = False):
             play_count += 1
 
             if(play_count-1 == len(game_map)**2):
-                win_condition(game_map)
-                if win_condition != True:
+                
+                win_status = win_condition(game_map)
+               
+                if not win_status:
                     print("Draw")
 
                 restart()
